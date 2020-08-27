@@ -1,0 +1,23 @@
+query getProjects($projectId: ObjectId) {
+  project(query: { _id: $projectId }) {
+    _id
+    title
+    description
+    collaborators {
+      _id
+      name
+    }
+    tags {
+      _id
+      title
+    }
+  }
+}
+
+mutation UpdateProject($projectId: ObjectId!, $updates: ProjectUpdateInput!) {
+  project: updateOneProject(query: { _id: $projectId }, set: $updates) {
+    _id
+    title
+    description
+  }
+}

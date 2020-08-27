@@ -1,0 +1,338 @@
+type DeleteManyPayload {
+  deletedCount: Int!
+}
+
+type InsertManyPayload {
+  insertedIds: [ObjectId]!
+}
+
+type Mutation {
+  deleteManyProjects(query: ProjectQueryInput): DeleteManyPayload
+  deleteManySections(query: SectionQueryInput): DeleteManyPayload
+  deleteManyTags(query: TagQueryInput): DeleteManyPayload
+  deleteManyUsers(query: UserQueryInput): DeleteManyPayload
+  deleteOneProject(query: ProjectQueryInput!): Project
+  deleteOneSection(query: SectionQueryInput!): Section
+  deleteOneTag(query: TagQueryInput!): Tag
+  deleteOneUser(query: UserQueryInput!): User
+  insertManyProjects(data: [ProjectInsertInput!]!): InsertManyPayload
+  insertManySections(data: [SectionInsertInput!]!): InsertManyPayload
+  insertManyTags(data: [TagInsertInput!]!): InsertManyPayload
+  insertManyUsers(data: [UserInsertInput!]!): InsertManyPayload
+  insertOneProject(data: ProjectInsertInput!): Project
+  insertOneSection(data: SectionInsertInput!): Section
+  insertOneTag(data: TagInsertInput!): Tag
+  insertOneUser(data: UserInsertInput!): User
+  replaceOneProject(query: ProjectQueryInput, data: ProjectInsertInput!): Project
+  replaceOneSection(query: SectionQueryInput, data: SectionInsertInput!): Section
+  replaceOneTag(query: TagQueryInput, data: TagInsertInput!): Tag
+  replaceOneUser(query: UserQueryInput, data: UserInsertInput!): User
+  updateManyProjects(query: ProjectQueryInput, set: ProjectUpdateInput!): UpdateManyPayload
+  updateManySections(query: SectionQueryInput, set: SectionUpdateInput!): UpdateManyPayload
+  updateManyTags(query: TagQueryInput, set: TagUpdateInput!): UpdateManyPayload
+  updateManyUsers(set: UserUpdateInput!, query: UserQueryInput): UpdateManyPayload
+  updateOneProject(query: ProjectQueryInput, set: ProjectUpdateInput!): Project
+  updateOneSection(query: SectionQueryInput, set: SectionUpdateInput!): Section
+  updateOneTag(query: TagQueryInput, set: TagUpdateInput!): Tag
+  updateOneUser(query: UserQueryInput, set: UserUpdateInput!): User
+  upsertOneProject(query: ProjectQueryInput, data: ProjectInsertInput!): Project
+  upsertOneSection(query: SectionQueryInput, data: SectionInsertInput!): Section
+  upsertOneTag(query: TagQueryInput, data: TagInsertInput!): Tag
+  upsertOneUser(query: UserQueryInput, data: UserInsertInput!): User
+}
+
+scalar ObjectId
+
+type Project {
+  _id: ObjectId!
+  category: Tag
+  collaborators: [User]!
+  description: String
+  subcategory: Tag
+  tags: [Tag]
+  title: String!
+}
+
+input ProjectCategoryRelationInput {
+  create: TagInsertInput
+  link: ObjectId
+}
+
+input ProjectCollaboratorsRelationInput {
+  link: [String]
+  create: [UserInsertInput]
+}
+
+input ProjectInsertInput {
+  _id: ObjectId
+  category: ProjectCategoryRelationInput
+  description: String
+  subcategory: ProjectSubcategoryRelationInput
+  tags: ProjectTagsRelationInput
+  title: String!
+  collaborators: ProjectCollaboratorsRelationInput!
+}
+
+input ProjectQueryInput {
+  title_ne: String
+  title_exists: Boolean
+  _id_lte: ObjectId
+  description_lte: String
+  title: String
+  tags_in: [TagQueryInput]
+  title_nin: [String]
+  description_in: [String]
+  title_lte: String
+  title_in: [String]
+  description_lt: String
+  _id_nin: [ObjectId]
+  description_gt: String
+  subcategory_exists: Boolean
+  description: String
+  collaborators_exists: Boolean
+  _id_exists: Boolean
+  OR: [ProjectQueryInput!]
+  _id_gte: ObjectId
+  description_exists: Boolean
+  subcategory: TagQueryInput
+  _id_in: [ObjectId]
+  _id_ne: ObjectId
+  title_gt: String
+  _id_gt: ObjectId
+  description_nin: [String]
+  collaborators: [UserQueryInput]
+  title_lt: String
+  category: TagQueryInput
+  tags_nin: [TagQueryInput]
+  tags: [TagQueryInput]
+  collaborators_in: [UserQueryInput]
+  _id_lt: ObjectId
+  title_gte: String
+  category_exists: Boolean
+  tags_exists: Boolean
+  _id: ObjectId
+  description_gte: String
+  description_ne: String
+  AND: [ProjectQueryInput!]
+  collaborators_nin: [UserQueryInput]
+}
+
+enum ProjectSortByInput {
+  SUBCATEGORY_ASC
+  TITLE_ASC
+  CATEGORY_ASC
+  DESCRIPTION_ASC
+  DESCRIPTION_DESC
+  SUBCATEGORY_DESC
+  TITLE_DESC
+  _ID_ASC
+  _ID_DESC
+  CATEGORY_DESC
+}
+
+input ProjectSubcategoryRelationInput {
+  create: TagInsertInput
+  link: ObjectId
+}
+
+input ProjectTagsRelationInput {
+  link: [ObjectId]
+  create: [TagInsertInput]
+}
+
+input ProjectUpdateInput {
+  collaborators_unset: Boolean
+  tags: ProjectTagsRelationInput
+  subcategory: ProjectSubcategoryRelationInput
+  title_unset: Boolean
+  _id: ObjectId
+  _id_unset: Boolean
+  description: String
+  collaborators: ProjectCollaboratorsRelationInput
+  subcategory_unset: Boolean
+  tags_unset: Boolean
+  description_unset: Boolean
+  category_unset: Boolean
+  category: ProjectCategoryRelationInput
+  title: String
+}
+
+type Query {
+  project(query: ProjectQueryInput): Project
+  projects(query: ProjectQueryInput, limit: Int = 100, sortBy: ProjectSortByInput): [Project]!
+  section(query: SectionQueryInput): Section
+  sections(query: SectionQueryInput, limit: Int = 100, sortBy: SectionSortByInput): [Section]!
+  tag(query: TagQueryInput): Tag
+  tags(query: TagQueryInput, limit: Int = 100, sortBy: TagSortByInput): [Tag]!
+  user(query: UserQueryInput): User
+  users(query: UserQueryInput, limit: Int = 100, sortBy: UserSortByInput): [User]!
+}
+
+type Section {
+  _id: ObjectId
+  files: [ObjectId]
+}
+
+input SectionInsertInput {
+  _id: ObjectId
+  files: [ObjectId]
+}
+
+input SectionQueryInput {
+  OR: [SectionQueryInput!]
+  _id_ne: ObjectId
+  files: [ObjectId]
+  _id: ObjectId
+  _id_nin: [ObjectId]
+  _id_lte: ObjectId
+  _id_gt: ObjectId
+  _id_gte: ObjectId
+  AND: [SectionQueryInput!]
+  _id_exists: Boolean
+  files_in: [ObjectId]
+  _id_in: [ObjectId]
+  _id_lt: ObjectId
+  files_nin: [ObjectId]
+  files_exists: Boolean
+}
+
+enum SectionSortByInput {
+  _ID_ASC
+  _ID_DESC
+}
+
+input SectionUpdateInput {
+  _id_unset: Boolean
+  files: [ObjectId]
+  files_unset: Boolean
+  _id: ObjectId
+}
+
+type Tag {
+  _id: ObjectId
+  title: String
+}
+
+input TagInsertInput {
+  _id: ObjectId
+  title: String
+}
+
+input TagQueryInput {
+  _id_gte: ObjectId
+  _id_exists: Boolean
+  _id_gt: ObjectId
+  title_gte: String
+  title_lt: String
+  _id_lt: ObjectId
+  title_nin: [String]
+  AND: [TagQueryInput!]
+  title_in: [String]
+  title_lte: String
+  title: String
+  _id_ne: ObjectId
+  _id: ObjectId
+  _id_in: [ObjectId]
+  _id_nin: [ObjectId]
+  title_gt: String
+  OR: [TagQueryInput!]
+  title_exists: Boolean
+  title_ne: String
+  _id_lte: ObjectId
+}
+
+enum TagSortByInput {
+  TITLE_DESC
+  _ID_ASC
+  _ID_DESC
+  TITLE_ASC
+}
+
+input TagUpdateInput {
+  _id: ObjectId
+  _id_unset: Boolean
+  title: String
+  title_unset: Boolean
+}
+
+type UpdateManyPayload {
+  matchedCount: Int!
+  modifiedCount: Int!
+}
+
+type User {
+  _id: String
+  email: String
+  name: String
+  profileImage: String
+}
+
+input UserInsertInput {
+  _id: String
+  email: String
+  name: String
+  profileImage: String
+}
+
+input UserQueryInput {
+  _id_exists: Boolean
+  email_ne: String
+  _id_lte: String
+  profileImage_lt: String
+  profileImage_exists: Boolean
+  email_gte: String
+  _id_nin: [String]
+  _id_lt: String
+  name: String
+  _id_gte: String
+  name_lt: String
+  profileImage_in: [String]
+  profileImage_gt: String
+  email_lte: String
+  name_in: [String]
+  profileImage_nin: [String]
+  name_lte: String
+  email_nin: [String]
+  email: String
+  OR: [UserQueryInput!]
+  email_lt: String
+  profileImage: String
+  name_gt: String
+  _id: String
+  profileImage_gte: String
+  profileImage_lte: String
+  _id_in: [String]
+  name_gte: String
+  email_gt: String
+  AND: [UserQueryInput!]
+  _id_gt: String
+  name_exists: Boolean
+  _id_ne: String
+  email_in: [String]
+  email_exists: Boolean
+  name_nin: [String]
+  profileImage_ne: String
+  name_ne: String
+}
+
+enum UserSortByInput {
+  NAME_DESC
+  PROFILEIMAGE_ASC
+  PROFILEIMAGE_DESC
+  _ID_ASC
+  _ID_DESC
+  EMAIL_ASC
+  EMAIL_DESC
+  NAME_ASC
+}
+
+input UserUpdateInput {
+  name: String
+  name_unset: Boolean
+  profileImage: String
+  profileImage_unset: Boolean
+  _id: String
+  _id_unset: Boolean
+  email: String
+  email_unset: Boolean
+}

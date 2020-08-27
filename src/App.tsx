@@ -1,24 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import Project from "./components/Project";
+import RealmApp, { useRealmApp } from "./backend/RealmApp";
+import GqlProvider from "./backend/GqlProvider";
+import "./App.css";
 
 function App() {
+  const app = useRealmApp();
+  const anonUser =
+    !app.user ||
+    !((app.user?.profile as any).identities.filter((id: any) => id.providerType !== "anon-user").length > 0);
+  if (!app.user) {
+    console.log(app.user);
+    app.logIn("test@tester.com", "testing12");
+    console.log(app.user);
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <GqlProvider>
+        <Project />
+        <div />
+      </GqlProvider>
     </div>
   );
 }
